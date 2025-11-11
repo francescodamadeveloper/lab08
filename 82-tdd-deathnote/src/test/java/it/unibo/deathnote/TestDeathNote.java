@@ -15,13 +15,13 @@ class TestDeathNote {
 
     @BeforeEach
     void setUp(){
-        this.book=null;
+        this.book=new DeathNoteImpl();
     }
 
     @Test
 
     void testWrongRuleIndex(){
-        for(int i = 0; i > TEST_TRIES;i++){
+        for(int i = 0; i < TEST_TRIES;i++){
             try{
                 book.getRule(-i);
                 fail("getting a rule with invalid index was possible but should have thrown an exception");
@@ -29,12 +29,13 @@ class TestDeathNote {
                 assertNotNull(e.getMessage());
                 assertFalse(e.getMessage().isBlank());
             }
+        }
     }
 
     @Test
 
     void testNullRule(){
-        for(int i = 0; i < DeathNote.RULES.size(); i++){
+        for(int i = 1; i <= DeathNote.RULES.size(); i++){
             assertNotNull(book.getRule(i));
             assertFalse(book.getRule(i).isBlank());
         }
@@ -68,14 +69,13 @@ class TestDeathNote {
             assertFalse(e.getMessage().isBlank());             
         }
         book.writeName("Peach");
-        assertEquals(DEFAULT_DEATH_CAUSE, book.getDeathCause("peach"));
+        assertEquals(DEFAULT_DEATH_CAUSE, book.getDeathCause("Peach"));
         book.writeName("Bowser");
         assertTrue(book.writeDeathCause("karting accident"));
         assertEquals("karting accident", book.getDeathCause("Bowser"));
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         assertFalse(book.writeDeathCause("Train accident"));
@@ -85,7 +85,7 @@ class TestDeathNote {
 
     void testDeathDetails(){
         try{
-            book.writeDetails("death by pregnancy");
+            book.writeDetails("death by merry christmas");
             fail("write details without a previous name was possible but should have thrown an exception");
         } catch(IllegalStateException e){
             assertNotNull(e.getMessage());
@@ -99,10 +99,9 @@ class TestDeathNote {
         try {
             Thread.sleep(6100);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        assertFalse(book.writeDetails("overdose di cazzi"));
+        assertFalse(book.writeDetails("overdose"));
 
     }
 
